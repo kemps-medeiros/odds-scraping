@@ -38,8 +38,8 @@ const fs = require('fs');
             return games;
         });
         const dataFormated = await transforData(data);
-        console.log(dataFormated);
-        await saveJson(dataFormated);
+        const gamesFiltered = await filterByAwayTeamOdd(dataFormated);
+        await saveJson(gamesFiltered);
         // other actions...
         await browser.close();
 
@@ -67,4 +67,8 @@ async function saveJson(dataFormated) {
     } catch (error) {
         console.log(error)
     }
+}
+
+async function filterByAwayTeamOdd(games) {
+    return games.filter(game => game.awayTeamOdds > 4.5 && game.awayTeamOdds < 10);
 }
