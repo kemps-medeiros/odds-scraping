@@ -1,8 +1,14 @@
 [
-  { "homeTeam": "Chelsea", "homeTeamOdds": 1.33, "awayTeam": "GNK Dinamo Zagreb", "awayTeamOdds": 9.5 },
+  { "homeTeam": "Chelsea", "homeTeamOdds": 1.36, "awayTeam": "GNK Dinamo Zagreb", "awayTeamOdds": 9 },
   { "homeTeam": "Milan", "homeTeamOdds": 1.5, "awayTeam": "Red Bull Salzburg", "awayTeamOdds": 6 },
-  { "homeTeam": "Real Madrid", "homeTeamOdds": 1.25, "awayTeam": "Celtic", "awayTeamOdds": 9.5 },
-  { "homeTeam": "Athletico", "homeTeamOdds": 1.55, "awayTeam": "Goiás", "awayTeamOdds": 6.5 },
+  { "homeTeam": "Athletico", "homeTeamOdds": 1.6, "awayTeam": "Goiás", "awayTeamOdds": 6.5 },
   { "homeTeam": "Palmeiras", "homeTeamOdds": 1.4, "awayTeam": "Fortaleza", "awayTeamOdds": 7 },
-  { "homeTeam": "Burnley", "homeTeamOdds": 1.4, "awayTeam": "Rotherham United", "awayTeamOdds": 9 }
+  { "homeTeam": "Burnley", "homeTeamOdds": 1.36, "awayTeam": "Rotherham United", "awayTeamOdds": 9.5 },
+  { "homeTeam": "Eibar", "homeTeamOdds": 1.67, "awayTeam": "CD Lugo", "awayTeamOdds": 5.5 },
+  {
+    "homeTeam": "Charlton Athletic",
+    "homeTeamOdds": 1.53,
+    "awayTeam": "Brighton & Hove Albion U21",
+    "awayTeamOdds": 4.75
+  }
 ]

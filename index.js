@@ -12,31 +12,18 @@ const fs = require('fs');
             waitUntil: ['load', 'domcontentloaded', 'networkidle0', 'networkidle2']
         });
 
+        await page.setViewport({
+            width: 1200,
+            height: 926 //para pegar mais jogos, aumentar a altura do viewport para o tamanho total da tela aprox. 7000
+        });
+
         await page.click('.slider')
 
         await page.waitForSelector('.sc-eDWCr.fvgWCd')
         await page.waitForSelector('.sc-hLBbgP.sc-eDvSVe.gjJmZQ.fRddxb')
-       
-        data = await page.evaluate(() => {
-            teams = Array.from(document.querySelectorAll('.sc-hLBbgP.eIlfTT'))
-            homeTeamss = teams.map(team => team.querySelectorAll('div')[0].innerText)
-            awayTeamss = teams.map(team => team.querySelectorAll('div')[1].innerText)
-            odds = Array.from(document.querySelectorAll('.sc-hLBbgP.sc-eDvSVe.gjJmZQ.fRddxb'))
-            homeOdds = odds.map(odd => Array.from(odd.querySelectorAll('.sc-eDWCr.fvgWCd')).length > 0  ? odd.querySelectorAll('.sc-eDWCr.fvgWCd')[0].innerText : '').filter(odd => odd != '')
-            awayOdds = odds.map(odd => Array.from(odd.querySelectorAll('.sc-eDWCr.fvgWCd')).length > 0  ? odd.querySelectorAll('.sc-eDWCr.fvgWCd')[2].innerText : '').filter(odd => odd != '')
 
-            let games = [];
-            for(let i = 0; i < homeTeamss.length; i++) {
-                games.push({
-                    homeTeam: homeTeamss[i],
-                    homeTeamOdds: homeOdds[i],
-                    awayTeam: awayTeamss[i],
-                    awayTeamOdds: awayOdds[i]
-                })
-            }
-           
-            return games;
-        });
+        data = await page.evaluate(extractGames);
+
         const dataFormated = await transforData(data);
         const gamesFiltered = await filterByAwayTeamOdd(dataFormated);
         await saveJson(gamesFiltered);
@@ -71,4 +58,25 @@ async function saveJson(dataFormated) {
 
 async function filterByAwayTeamOdd(games) {
     return games.filter(game => game.awayTeamOdds > 4.5 && game.awayTeamOdds < 10);
+}
+
+function extractGames() {
+    teams = Array.from(document.querySelectorAll('.sc-hLBbgP.eIlfTT'))
+    homeTeamss = teams.map(team => team.querySelectorAll('div')[0].innerText)
+    awayTeamss = teams.map(team => team.querySelectorAll('div')[1].innerText)
+    odds = Array.from(document.querySelectorAll('.sc-hLBbgP.sc-eDvSVe.gjJmZQ.fRddxb'))
+    homeOdds = odds.map(odd => Array.from(odd.querySelectorAll('.sc-eDWCr.fvgWCd')).length > 0 ? odd.querySelectorAll('.sc-eDWCr.fvgWCd')[0].innerText : '').filter(odd => odd != '')
+    awayOdds = odds.map(odd => Array.from(odd.querySelectorAll('.sc-eDWCr.fvgWCd')).length > 0 ? odd.querySelectorAll('.sc-eDWCr.fvgWCd')[2].innerText : '').filter(odd => odd != '')
+
+    let games = [];
+    for (let i = 0; i < homeTeamss.length; i++) {
+        games.push({
+            homeTeam: homeTeamss[i],
+            homeTeamOdds: homeOdds[i],
+            awayTeam: awayTeamss[i],
+            awayTeamOdds: awayOdds[i]
+        })
+    }
+
+    return games;
 }
