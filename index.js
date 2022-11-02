@@ -16,7 +16,6 @@ const puppeteer = require('puppeteer');
         await page.waitForSelector('.sc-eDWCr.fvgWCd')
         await page.waitForSelector('.sc-hLBbgP.sc-eDvSVe.gjJmZQ.fRddxb')
        
-
         data = await page.evaluate(() => {
             teams = Array.from(document.querySelectorAll('.sc-hLBbgP.eIlfTT'))
             homeTeamss = teams.map(team => team.querySelectorAll('div')[0].innerText)
@@ -37,7 +36,8 @@ const puppeteer = require('puppeteer');
            
             return games;
         });
-        console.log(data);
+        const dataFormated = await transforData(data);
+        console.log(dataFormated);
         // other actions...
         // await browser.close();
 
@@ -47,47 +47,14 @@ const puppeteer = require('puppeteer');
 
 })();
 
+async function transforData(data) {
+    return data.map(game => {
+        let gameFormated = {}
+        gameFormated.homeTeam = game.homeTeam;
+        gameFormated.homeTeamOdds = parseFloat(game.homeTeamOdds);
+        gameFormated.awayTeam = game.awayTeam;
+        gameFormated.awayTeamOdds = parseFloat(game.awayTeamOdds);
 
-// (async () => {
-//     const browser = await puppeteer.launch();
-//     const page = await browser.newPage();
-//     await page.goto("https://en.wikipedia.org/wiki/Web_scraping");
-
-//     headings = await page.evaluate(() => {
-//       headings_elements = document.querySelectorAll("h2 .mw-headline");
-//       headings_array = Array.from(headings_elements);
-//       return headings_array.map(heading => heading.textContent);
-//     });
-//     console.log(headings);
-//     await browser.close();
-//   })();
-
-//   https://api.sofascore.com/api/v1/event/10433875
-// api com dados de determinado evento
-
-// page.on('load', () => console.log('Page loaded!: ' + page.url()));
-// await page.goto(url, {
-//         waitUntil: ['load','domcontentloaded','networkidle0','networkidle2']
-//     });
-
-
-// const puppeteer = require("puppeteer");
-// (async () => {
-//   let url = "https://www.airbnb.com/s/homes?refinement_paths%5B%5D=%2Fhomes&search_type=section_navigation&property_type_id%5B%5D=8";
-//   const browser = await puppeteer.launch(url);
-//   const page = await browser.newPage();
-//   await page.goto(url);
-//   data = await page.evaluate(() => {
-//     root = Array.from(document.querySelectorAll("#FMP-target [itemprop='itemListElement']"));
-//     hotels = root.map(hotel => ({
-//       Name: hotel.querySelector('ol').parentElement.nextElementSibling.textContent,
-//       Photo: hotel.querySelector("img").getAttribute("src")
-//     }));
-//     return hotels;
-//   });
-//   console.log(data);
-//   await browser.close();
-// })();
-
-// classe dos jogos 
-// sc-hLBbgP sc-eDvSVe gjJmZQ fRddxb
+        return gameFormated;
+    })
+}
