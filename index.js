@@ -1,4 +1,5 @@
 const puppeteer = require('puppeteer');
+const fs = require('fs');
 
 (async () => {
     try {
@@ -38,8 +39,9 @@ const puppeteer = require('puppeteer');
         });
         const dataFormated = await transforData(data);
         console.log(dataFormated);
+        await saveJson(dataFormated);
         // other actions...
-        // await browser.close();
+        await browser.close();
 
     } catch (error) {
 
@@ -57,4 +59,12 @@ async function transforData(data) {
 
         return gameFormated;
     })
+}
+
+async function saveJson(dataFormated) {
+    try {
+        fs.writeFileSync('games.json', JSON.stringify(dataFormated));
+    } catch (error) {
+        console.log(error)
+    }
 }
